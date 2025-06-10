@@ -1,0 +1,12 @@
+{
+  "HR": {
+    "embeddings_file": "persistent_embeddings.npy",
+    "paths_file": "persistent_paths.json",
+    "chat_history_file": "chat_history.json"
+  },
+  "IT": {
+    "embeddings_file": "embeddings_IT.npy",
+    "paths_file": "paths_IT.json",
+    "chat_history_file": "chat_history_IT.json"
+  }
+}

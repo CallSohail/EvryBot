@@ -1,0 +1,30 @@
+14) Suivi de l'évaluation : Assurer le suivi de l'évaluation des enseignements et de la formation. (3 filières max par enseignant). 36h par année en BUT FI, 
+DEUST FI
+EN LICENCE FI :
+12 à 48 h pour un élément de 
+formation
+Recommandation de calcul des 
+hTD :
+Selon le nombre d'étudiants (N)
+hTD = 12 + 0,05*N
+En MASTER FI : 
+12 à 36 h pour un élément de 
+formation
+Recommandation de calcul des 
+hTD :
+Selon le nombre d'étudiants (N)
+hTD = 12 + 0,2*N
+Composante selon 
+notification
+Composante
+ Département
+A15
+Responsable de 
+parcours ou 
+d'année FA/FC
+Les responsable et co responsable de parcours ou d'année FA/FC assurent les missions suivantes :
+ En sus des missions 1) à 14) ci-dessus, la responsabilité nécessité :
+15) suivi régulier de l'assiduité des apprentis 
+16) Lien avec le CFA (réunions et validation des contrats et suivi des critères qualité)
+17) Lien avec l'entreprise et le tuteur en entreprise (recrutement en lien avec  l'entreprise)
+ (3 filières max par enseignant).

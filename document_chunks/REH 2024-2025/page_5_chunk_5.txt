@@ -1,0 +1,19 @@
+2) Aide à la recherche de stage,  
+3) Révision cv,  
+4)  Suivi individuel sur l'évolution de la recherche,  
+5) Aide supplémentaire pour ceux qui ne parviennent pas à trouver (entretien fictif…)  
+6) Analyse des missions avec mise en place du contrat et de la convention de stage,  
+7) Distribution de la méthodologie de déroulement du stage et de la soutenance,  
+8) Répartition des tuteurs ,  
+9)  Mise en place soutenances (organisation du calendrier, réservation salles, choix des lecteurs et des 
+membres du jurys)
+12 à 36 h selon le nombre 
+d'étudiants (N)
+hTD = 12 + 0,1*N
+sauf
+Coordination stage en STAPS:
+3h pour 10 étudiants
+Composante selon 
+notification
+Composante
+ Département

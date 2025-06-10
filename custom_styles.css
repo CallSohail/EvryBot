@@ -1,0 +1,557 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@400;500;600;700&display=swap');
+
+/* ===== CSS Variables ===== */
+:root {
+    /* Colors */
+    --color-primary: #1E3A8A;
+    --color-secondary: #6B7280;
+    --color-background: #F3F4F6;
+    --color-border: #e5e7eb;
+    --color-success: #065F46;
+    --color-success-bg: #D1FAE5;
+    --color-warning: #92400E;
+    --color-warning-bg: #FEF3C7;
+    --color-danger: #ef4444;
+    --color-danger-bg: #fee2e2;
+    
+    /* Font Families */
+    --font-primary: Arial, sans-serif;
+    --font-admin: Arial, sans-serif;
+    --font-markdown: Arial, sans-serif;
+    
+    /* Font Sizes - Increased sizes */
+    --font-size-base: 18px;
+    --font-size-h1: 36px;
+    --font-size-h2: 28px;
+    --font-size-h3: 24px;
+    --font-size-button: 16px;
+    --font-size-small: 16px;
+    
+    /* Line Heights */
+    --line-height-base: 1.6;
+    --line-height-heading: 1.3;
+    
+    /* Font Weights */
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+    
+    /* Spacing - Increased spacing */
+    --spacing-xs: 0.35rem;
+    --spacing-sm: 0.65rem;
+    --spacing-md: 0.9rem;
+    --spacing-lg: 1.2rem;
+    --spacing-xl: 1.8rem;
+    
+    /* Border Radius */
+    --radius-sm: 0.3rem;
+    --radius-md: 0.45rem;
+    --radius-lg: 0.6rem;
+    --radius-full: 9999px;
+    
+    /* Transitions */
+    --transition-base: all 0.2s ease;
+    --transition-smooth: all 0.3s ease;
+}
+
+/* ===== Base Styles ===== */
+body, .main, .stMarkdown, .stDataFrame {
+    font-family: var(--font-primary) !important;
+    font-size: var(--font-size-base) !important;
+    line-height: var(--line-height-base) !important;
+}
+
+/* ===== Typography ===== */
+h1, h2, h3 {
+    color: var(--color-primary) !important;
+    line-height: var(--line-height-heading) !important;
+    font-family: Arial, sans-serif !important;
+}
+
+h1 {
+    font-size: var(--font-size-h1) !important;
+    font-weight: var(--font-weight-bold) !important;
+    text-align: center !important;
+    margin-bottom: var(--spacing-xl) !important;
+}
+
+h2 {
+    font-size: var(--font-size-h2) !important;
+    font-weight: var(--font-weight-semibold) !important;
+    margin-bottom: var(--spacing-lg) !important;
+}
+
+h3 {
+    font-size: var(--font-size-h3) !important;
+    font-weight: var(--font-weight-semibold) !important;
+    margin-bottom: var(--spacing-md) !important;
+}
+
+/* ===== Components ===== */
+/* Sidebar */
+.sidebar-header {
+    font-size: calc(var(--font-size-h3) + 2px) !important;
+    color: var(--color-primary) !important;
+    margin-bottom: var(--spacing-lg) !important;
+    padding: var(--spacing-sm) !important;
+    border-bottom: 2px solid var(--color-primary) !important;
+    font-family: Arial, sans-serif !important;
+}
+
+.sidebar-button {
+    width: 100% !important;
+    margin: var(--spacing-sm) 0 !important;
+    padding: var(--spacing-md) !important;
+    border-radius: var(--radius-lg) !important;
+    background-color: transparent !important;
+    color: var(--color-primary) !important;
+    border: 1px solid var(--color-border) !important;
+    transition: var(--transition-smooth) !important;
+    font-family: Arial, sans-serif !important;
+    font-size: var(--font-size-button) !important;
+}
+
+.sidebar-button:hover {
+    background-color: var(--color-background) !important;
+    transform: translateY(-2px) !important;
+}
+
+/* Chat History */
+.chat-history-item {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: var(--spacing-md) !important;
+    margin: var(--spacing-xs) 0 !important;
+    border-radius: var(--radius-lg) !important;
+    background-color: transparent !important;
+    border: 1px solid var(--color-border) !important;
+    transition: var(--transition-smooth) !important;
+    cursor: pointer !important;
+    font-family: Arial, sans-serif !important;
+    font-weight: var(--font-weight-medium) !important;
+    font-size: calc(var(--font-size-base) - 1px) !important;
+}
+
+.chat-history-item:hover {
+    background-color: var(--color-background) !important;
+    transform: translateX(4px) !important;
+}
+
+.chat-history-item.active {
+    background-color: var(--color-background) !important;
+    border-color: var(--color-primary) !important;
+}
+
+/* Chat Actions */
+.chat-actions {
+    display: none !important;
+    gap: var(--spacing-xs) !important;
+}
+
+.chat-history-item:hover .chat-actions {
+    display: flex !important;
+}
+
+.chat-action-button {
+    padding: var(--spacing-xs) !important;
+    border-radius: var(--radius-sm) !important;
+    background-color: transparent !important;
+    border: none !important;
+    cursor: pointer !important;
+    transition: var(--transition-base) !important;
+    color: var(--color-secondary) !important;
+}
+
+.chat-action-button:hover {
+    background-color: var(--color-background) !important;
+    color: var(--color-primary) !important;
+}
+
+.delete-button {
+    color: var(--color-danger) !important;
+}
+
+.delete-button:hover {
+    background-color: var(--color-danger-bg) !important;
+}
+
+/* Progress Bar */
+.stProgress {
+    margin: var(--spacing-lg) 0 !important;
+}
+
+.stProgress > div {
+    height: 0.5rem !important;
+    border-radius: var(--radius-sm) !important;
+}
+
+.stProgress > div > div {
+    background-color: var(--color-background) !important;
+    border-radius: var(--radius-sm) !important;
+}
+
+.stProgress > div > div > div {
+    background-color: var(--color-primary) !important;
+    border-radius: var(--radius-sm) !important;
+}
+
+/* Tabs */
+.stTabs [data-baseweb="tab-list"] {
+    gap: var(--spacing-lg) !important;
+}
+
+.stTabs [data-baseweb="tab"] {
+    height: 3rem !important;
+    white-space: pre-wrap !important;
+    background-color: transparent !important;
+    border-radius: var(--radius-lg) !important;
+    gap: var(--spacing-sm) !important;
+    padding: var(--spacing-sm) 0 !important;
+    color: var(--color-primary) !important;
+    font-size: var(--font-size-base) !important;
+}
+
+.stTabs [aria-selected="true"] {
+    background-color: transparent !important;
+    color: var(--color-primary) !important;
+    font-weight: var(--font-weight-bold) !important;
+    border-bottom: 2px solid var(--color-primary) !important;
+}
+
+/* Metric Cards */
+.metric-card {
+    background-color: white !important;
+    border-radius: var(--radius-lg) !important;
+    padding: var(--spacing-xl) !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+}
+
+.metric-value {
+    font-size: 1.8rem !important;
+    font-weight: var(--font-weight-bold) !important;
+    color: var(--color-primary) !important;
+}
+
+.metric-label {
+    font-size: 1.1rem !important;
+    color: var(--color-secondary) !important;
+}
+
+/* Chat Toolbar */
+.chat-toolbar {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: var(--spacing-xs) !important;
+    margin-top: var(--spacing-sm) !important;
+    padding: var(--spacing-xs) !important;
+    border-radius: var(--radius-lg) !important;
+    background-color: transparent !important;
+    transition: var(--transition-base) !important;
+    font-family: var(--font-primary) !important;
+    font-weight: var(--font-weight-medium) !important;
+}
+
+.chat-toolbar:hover {
+    background-color: var(--color-background) !important;
+}
+
+/* Feedback Component */
+.stFeedback {
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: var(--spacing-xs) !important;
+    font-family: var(--font-primary) !important;
+    font-weight: var(--font-weight-medium) !important;
+}
+
+.stFeedback button {
+    padding: var(--spacing-sm) !important;
+    margin: 0 !important;
+    border: none !important;
+    background: none !important;
+    color: var(--color-secondary) !important;
+    cursor: pointer !important;
+    transition: var(--transition-base) !important;
+    font-size: 24px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 2.5rem !important;
+    height: 2.5rem !important;
+    border-radius: var(--radius-md) !important;
+}
+
+.stFeedback button:hover {
+    background-color: var(--color-background) !important;
+    color: var(--color-primary) !important;
+    transform: scale(1.2) !important;
+}
+
+.stFeedback button:active {
+    transform: scale(0.95) !important;
+}
+
+/* Alert Messages */
+.stSuccess, .stWarning {
+    padding: var(--spacing-sm) var(--spacing-lg) !important;
+    border-radius: var(--radius-md) !important;
+    margin: var(--spacing-sm) 0 !important;
+    animation: fadeInOut 3s ease-in-out !important;
+    font-family: var(--font-primary) !important;
+    font-weight: var(--font-weight-medium) !important;
+}
+
+.stSuccess {
+    background-color: var(--color-success-bg) !important;
+    color: var(--color-success) !important;
+}
+
+.stWarning {
+    background-color: var(--color-warning-bg) !important;
+    color: var(--color-warning) !important;
+}
+
+/* Animations */
+@keyframes fadeInOut {
+    0% { opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+    :root {
+        --font-size-base: 14px;
+        --font-size-h1: 28px;
+        --font-size-h2: 22px;
+        --font-size-h3: 18px;
+        --font-size-button: 13px;
+    }
+    
+    .chat-toolbar {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+    }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --color-background: #1a1a1a;
+        --color-border: #333333;
+    }
+}
+
+/* Chat Message Styles - Increased font sizes */
+.chat-message, .stChatMessageContent {
+    font-family: Arial, sans-serif !important;
+    font-size: 20px !important;
+    line-height: 1.6 !important;
+}
+
+/* User Message */
+.stChatMessageContent[data-testid="stChatMessageContent"] {
+    font-family: Arial, sans-serif !important;
+    font-size: 20px !important;
+}
+
+/* Assistant Message */
+.stChatMessageContent[data-testid="stChatMessageContent"]:not(:first-child) {
+    font-family: Arial, sans-serif !important;
+    font-size: 20px !important;
+}
+
+/* Chat Input */
+.stTextInput > div > div > input {
+    font-family: Arial, sans-serif !important;
+    font-size: 18px !important;
+    font-weight: var(--font-weight-normal) !important;
+}
+
+.chat-title {
+    font-family: Arial, sans-serif !important;
+    font-weight: var(--font-weight-bold) !important;
+    font-size: 18px !important;
+}
+
+/* Markdown Content */
+.stMarkdown, .stMarkdown p {
+    font-family: Arial, sans-serif !important;
+    font-size: 18px !important;
+    line-height: 1.6 !important;
+}
+
+/* Sources Button */
+.sources-button {
+    font-family: var(--font-primary) !important;
+    font-weight: var(--font-weight-medium) !important;
+}
+
+/* Toolbar Icons */
+.toolbar-icon {
+    font-family: var(--font-primary) !important;
+    font-weight: var(--font-weight-medium) !important;
+}
+
+/* Force Arial for all chat messages (user and assistant) and markdown with increased size */
+.stChatMessageContent, .chat-message, .stMarkdown, .stMarkdown p {
+    font-family: Arial, sans-serif !important;
+    font-weight: normal !important;
+    font-size: 20px !important;
+}
+
+/* If you want only user messages bold and assistant normal, use: */
+.stChatMessageContent.user, .chat-message.user {
+    font-family: Arial, sans-serif !important;
+    font-weight: normal !important;
+    font-size: 20px !important;
+}
+
+.stChatMessageContent.assistant, .chat-message.assistant {
+    font-family: Arial, sans-serif !important;
+    font-weight: normal !important;
+    font-size: 20px !important;
+}
+
+/* Chat input field styling */
+input[type="text"], .stTextInput input, textarea, .stTextArea textarea {
+    font-family: Arial, sans-serif !important;
+    font-size: 18px !important;
+    font-weight: normal !important;
+    color: #1E3A8A !important;
+    background: #F3F4F6 !important;
+    border-radius: 0.5rem !important;
+    border: 1px solid #e5e7eb !important;
+    padding: 0.75rem 1rem !important;
+}
+
+/* Additional styles for better chat message rendering */
+.element-container, .stMarkdown, .streamlit-expanderContent {
+    font-family: Arial, sans-serif !important;
+    font-size: 20px !important;
+}
+
+/* Style for stMarkdown elements within chat messages */
+.stChatMessageContent .stMarkdown {
+    font-family: Arial, sans-serif !important;
+    font-size: 20px !important;
+}
+
+/* Enhanced styling for chat message containers */
+[data-testid="stChatMessage"] {
+    margin-bottom: 1.2rem !important;
+    padding: 0.8rem !important;
+}
+
+/* Button Enhancements - Increased size for all buttons */
+button, .stButton > button {
+    font-family: Arial, sans-serif !important;
+    font-size: 18px !important;
+    font-weight: var(--font-weight-medium) !important;
+    padding: 0.7rem 1.2rem !important;
+    border-radius: var(--radius-md) !important;
+    transition: var(--transition-smooth) !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Admin Panel and sidebar buttons */
+[data-testid="stSidebarNavItems"] button,
+button[kind="secondary"],
+button[data-testid="baseButton-secondary"] {
+    font-size: 18px !important;
+    font-weight: var(--font-weight-medium) !important;
+    padding: 0.8rem 1.2rem !important;
+    min-height: 2.8rem !important;
+    border-radius: var(--radius-md) !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* NEW CHAT button specific styling */
+button[key="new_chat_sidebar"] {
+    font-size: 20px !important;
+    font-weight: var(--font-weight-bold) !important;
+    padding: 1rem 1.2rem !important;
+    min-height: 3rem !important;
+    background-color: var(--color-primary) !important;
+    color: white !important;
+}
+
+/* Sources button styling */
+button[key^="ref_toggle_"] {
+    font-size: 18px !important;
+    padding: 0.5rem 1rem !important;
+    background-color: #f3f4f6 !important;
+    color: var(--color-primary) !important;
+    border: 1px solid var(--color-border) !important;
+    margin-right: 0.5rem !important;
+}
+
+/* Load Data button styling */
+button[key="load_previous_data_sidebar"] {
+    font-size: 18px !important;
+    font-weight: var(--font-weight-medium) !important;
+    padding: 0.8rem 1.2rem !important;
+    background-color: #e2e8f0 !important;
+    color: var(--color-primary) !important;
+    border: 1px solid var(--color-border) !important;
+}
+
+/* Button hover effects */
+button:hover, .stButton > button:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Admin Panel button styling */
+button[key="admin_panel_sidebar"] {
+    font-size: 18px !important;
+    font-weight: var(--font-weight-medium) !important;
+    padding: 0.8rem 1.2rem !important;
+    background-color: #f8fafc !important;
+    border: 1px solid #cbd5e1 !important;
+    color: var(--color-primary) !important;
+}
+
+/* Submit buttons in forms */
+.stButton [data-testid="baseButton-primary"] {
+    font-size: 18px !important;
+    padding: 0.7rem 1.5rem !important;
+    background-color: var(--color-primary) !important;
+    color: white !important;
+    border-radius: var(--radius-md) !important;
+}
+
+/* Chat input send button (paper plane icon) */
+button[data-testid="chatInputSubmitButton"] {
+    transform: scale(1.3) !important;
+    margin-right: 0.5rem !important;
+}
+
+/* Ensure all headings in chat messages use Arial */
+.stChatMessageContent h1, 
+.stChatMessageContent h2, 
+.stChatMessageContent h3, 
+.stChatMessageContent h4 {
+    font-family: Arial, sans-serif !important;
+}
+
+.stChatMessageContent h1 { font-size: 28px !important; }
+.stChatMessageContent h2 { font-size: 24px !important; }
+.stChatMessageContent h3 { font-size: 20px !important; }
+.stChatMessageContent h4 { font-size: 18px !important; }
+
+/* Make sure lists in chat messages use proper sizing */
+.stChatMessageContent ul,
+.stChatMessageContent ol,
+.stChatMessageContent li {
+    font-family: Arial, sans-serif !important;
+    font-size: 20px !important;
+} 

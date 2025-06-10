@@ -1,0 +1,25 @@
+[
+  {
+    "role": "user",
+    "content": "Mon REH n\u2019appara\u00eet pas dans sysiphe concernant ma fonction de directeur d\u2019\u00e9cole doctorale, comment faire ?"
+  },
+  {
+    "role": "assistant",
+    "content": "Il est indiqu\u00e9 que le projet de r\u00e9int\u00e9gration de Sysiphe en tant qu'application pour la gestion du personnel est en cours.  Cependant, le calendrier pr\u00e9cis de cette int\u00e9gration et son impact sur la visibilit\u00e9 de votre REH dans le syst\u00e8me ne sont pas d\u00e9taill\u00e9s.  Il est mentionn\u00e9 que des discussions ont lieu pour \u00e9valuer l'impact sur les ressources n\u00e9cessaires au projet, mais qu'il n'y a pas d'urgence \u00e0 ce sujet.  En cons\u00e9quence, je ne peux pas vous fournir d'informations sur la marche \u00e0 suivre pour faire appara\u00eetre votre REH dans Sysiphe.\n",
+    "references": [
+      [
+        "pdf_pages\\CARI_CR_2024-04-05-V02\\page_4.png",
+        0.39648887005466427
+      ],
+      [
+        "pdf_pages\\CARI_RD_2024-10-04__V01\\page_2.png",
+        0.37216077735361586
+      ],
+      [
+        "pdf_pages\\CARI_RD_2024-11-08__V02\\page_1.png",
+        0.36639205891335047
+      ]
+    ],
+    "answer_time": 8.756683826446533
+  }
+]

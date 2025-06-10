@@ -1,0 +1,49 @@
+[
+  {
+    "role": "user",
+    "content": "comment changer mon mots de pass windows?"
+  },
+  {
+    "role": "assistant",
+    "content": "Pour changer votre mot de passe Windows, vous devez appuyer simultan\u00e9ment sur les touches Contr\u00f4le+Alt+Suppr.  Ensuite, cliquez sur \"modifier un mot de passe\".  Vous devrez saisir votre mot de passe actuel, puis saisir deux fois votre nouveau mot de passe.  Cette proc\u00e9dure ne peut \u00eatre effectu\u00e9e que si vous \u00eates connect\u00e9 au r\u00e9seau de l'universit\u00e9.\n\nSource : PDF 'Comment changer son mot de passe de session Windows', page 1\n",
+    "references": [
+      [
+        "pdf_pages\\Comment changer son mot de passe de session Windows\\page_1.png",
+        0.6662018190591595
+      ],
+      [
+        "pdf_pages\\Most Popular Questions\\page_1.png",
+        0.43008936746871884
+      ],
+      [
+        "pdf_pages\\Recent Entries\\page_1.png",
+        0.4233333955716615
+      ]
+    ],
+    "answer_time": 5.704302072525024,
+    "feedback": 1
+  },
+  {
+    "role": "user",
+    "content": "what is the capital of France?"
+  },
+  {
+    "role": "assistant",
+    "content": "Malheureusement,  les documents fournis ne contiennent aucune information sur la capitale de la France.  Je ne peux donc pas r\u00e9pondre \u00e0 votre question.\n",
+    "references": [
+      [
+        "pdf_pages\\application__ofil\\page_2.png",
+        0.3819526213051072
+      ],
+      [
+        "pdf_pages\\assistance_utilisateurs etudiants\\page_2.png",
+        0.3819526213051072
+      ],
+      [
+        "pdf_pages\\compilatio\\page_3.png",
+        0.3819526213051072
+      ]
+    ],
+    "answer_time": 6.6039087772369385
+  }
+]
