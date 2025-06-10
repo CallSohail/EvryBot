@@ -31,6 +31,10 @@ from prompt_engineering import (
 )
 import shutil
 
+# Configure matplotlib to use a fallback font
+plt.rcParams['font.family'] = 'sans-serif'
+plt.rcParams['font.sans-serif'] = ['DejaVu Sans', 'Arial', 'Helvetica', 'sans-serif']
+
 # --- Constants for Persistence ---
 EMBEDDINGS_FILE = "persistent_embeddings.npy"
 PATHS_FILE = "persistent_paths.json"
@@ -1949,48 +1953,60 @@ def save_feedback(index, answer_content=None):
     st.session_state[f"feedback_answer_{index}"] = answer_content
 
 def display_chat_history():
-    """Display the chat history with feedback functionality."""
-    if st.session_state.doc_embeddings is not None and st.session_state.image_paths:
-        if not st.session_state.history:
-            return
-        for i, message in enumerate(st.session_state.history):
-            with st.chat_message(message["role"]):
+    """Display the chat history with proper formatting and references"""
+    if not st.session_state.history:
+        return
+
+    for i, message in enumerate(st.session_state.history):
+        with st.container():
+            # Create columns for the message
+            col1, col2 = st.columns([1, 20])
+            
+            # Display avatar in first column
+            with col1:
+                if message["role"] == "user":
+                    st.image("logo.gif", width=40)
+                else:
+                    st.image("logo.gif", width=40)
+            
+            # Display message content in second column
+            with col2:
+                # Message header with timestamp
+                st.markdown(f"""
+                    <div class="message-header">
+                        <span class="role">{message["role"].title()}</span>
+                        <span class="timestamp">{message["timestamp"]}</span>
+                    </div>
+                """, unsafe_allow_html=True)
+                
+                # Message content
                 st.markdown(message["content"])
-                if message["role"] == "assistant":
-                    feedback = message.get("feedback", None)
-                    st.session_state[f"feedback_{i}"] = feedback
-                    # Create toolbar container
-                    st.markdown('<div class="chat-toolbar">', unsafe_allow_html=True)
-                    # Sources button
-                    if "references" in message:
-                        if st.button("Sources", key=f"ref_toggle_{i}", use_container_width=False):
-                            toggle_references(f"msg_{i}")
-                    # Set the answer in session state before rendering feedback button
-                    st.session_state[f"feedback_answer_{i}"] = message["content"]
-                    # Feedback buttons - directly call handle_feedback
-                    st.feedback(
-                        "thumbs",
-                        key=f"feedback_{i}",
-                        on_change=handle_feedback,
-                        args=[i],
-                    )
-                    st.markdown('</div>', unsafe_allow_html=True)
-                    # Show references if toggled
-                    if st.session_state.show_references.get(f"msg_{i}", False):
-                        st.write("#### References:")
+                
+                # Display references if they exist
+                if "references" in message and message["references"]:
+                    with st.expander("References"):
+                        # Create columns for references
                         cols = st.columns(min(3, len(message["references"])))
                         for j, ((img_path, score), col) in enumerate(zip(message["references"], cols)):
                             with col:
-                                st.image(img_path, caption=f"Relevance: {score:.2f}", use_container_width=True)
+                                # Use os.path.join for path construction
+                                img_path = os.path.join("pdf_pages", os.path.basename(os.path.dirname(img_path)), os.path.basename(img_path))
+                                st.image(img_path, caption=f"Relevance: {score:.2f}")
                                 filename = os.path.basename(img_path)
                                 if "page_" in filename:
                                     pdf_folder = os.path.basename(os.path.dirname(img_path))
-                                    page_num = filename.replace("page_", "").replace(".png", "")
-                                    st.caption(f"{pdf_folder} - Page {page_num}")
-                                else:
-                                    st.caption(filename)
-                elif "image" in message and message["image"]:
-                    st.image(message["image"], use_container_width=True)
+                                    st.markdown(f"*From: {pdf_folder}*")
+                
+                # Add feedback buttons
+                col1, col2 = st.columns(2)
+                with col1:
+                    if st.button("👍", key=f"up_{i}"):
+                        save_feedback(i, "positive")
+                with col2:
+                    if st.button("👎", key=f"down_{i}"):
+                        save_feedback(i, "negative")
+                
+                st.markdown("---")
 
 def handle_feedback(message_index):
     """Handle feedback submission"""
@@ -2478,8 +2494,6 @@ elif st.session_state.get('show_workspace', False):
         st.session_state.show_workspace = False
     st.rerun()
 
-# Example: In a callback or button action, instead of st.rerun():
-# st.session_state.should_rerun = True
 
 # At the end of the script:
 if st.session_state.get('should_rerun', False):
