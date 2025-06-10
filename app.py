@@ -30,23 +30,6 @@ from prompt_engineering import (
     FRENCH_INTENT_CATEGORIES
 )
 import shutil
-from dotenv import load_dotenv
-import logging
-from pathlib import Path
-import traceback
-import sys
-import matplotlib
-matplotlib.use('Agg')  # Use non-interactive backend
-import tempfile
-import shutil
-import subprocess
-import platform
-import warnings
-warnings.filterwarnings('ignore')
-
-# Configure matplotlib to use a fallback font
-plt.rcParams['font.family'] = 'sans-serif'
-plt.rcParams['font.sans-serif'] = ['DejaVu Sans', 'Arial', 'Helvetica', 'sans-serif']
 
 # --- Constants for Persistence ---
 EMBEDDINGS_FILE = "persistent_embeddings.npy"
@@ -57,17 +40,6 @@ KEY_FILE = "key.txt"
 ANALYTICS_FILE = "analytics_data.json"  # New file for analytics data
 WORKSPACES_FILE = "workspaces.json"
 
-# --- Streamlit App Configuration ---
-st.set_page_config(layout="wide", page_title="Chatbot Évry")
-
-# Load custom CSS from a separate file if it exists
-css_path = os.path.join(os.path.dirname(__file__), "custom_styles.css")
-if os.path.exists(css_path):
-    with open(css_path) as f:
-        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
-
-# --- Environment Variables and API Keys ---
-load_dotenv()
 
 def load_workspaces():
     if not os.path.exists(WORKSPACES_FILE):
@@ -635,6 +607,15 @@ try:
 except Exception as e:
     st.error(f"Error initializing API clients: {str(e)}")
 
+# --- Streamlit App Configuration ---
+st.set_page_config(layout="wide", page_title="Chatbot Évry")
+
+# Load custom CSS from a separate file if it exists
+css_path = os.path.join(os.path.dirname(__file__), "custom_styles.css")
+if os.path.exists(css_path):
+    with open(css_path) as f:
+        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+
 # --- Sidebar Redesign ---
 with st.sidebar:
     # University logo at the very top, reduced size
@@ -791,16 +772,7 @@ def pil_to_base64(pil_image: PIL.Image.Image) -> str:
 @lru_cache(maxsize=100)
 def load_image_cached(image_path):
     """Cache image loading to improve performance"""
-    try:
-        # Normalize the path to handle both Windows and Unix-style paths
-        normalized_path = os.path.normpath(image_path)
-        if not os.path.exists(normalized_path):
-            st.error(f"Image file not found: {normalized_path}")
-            return None
-        return Image.open(normalized_path)
-    except Exception as e:
-        st.error(f"Error loading image {image_path}: {str(e)}")
-        return None
+    return Image.open(image_path)
 
 def track_api_usage(api_name, operation_type=None, success=True, response_time=None):
     """Enhanced API usage tracking with detailed metrics"""
@@ -868,7 +840,7 @@ def process_pdf_async(pdf_file, cohere_client, base_output_folder="pdf_pages"):
 
 def search_within_pdf(pdf_name, query, co_client):
     """Search for text within a PDF's pages using advanced prompt engineering"""
-    pdf_folder = os.path.normpath(os.path.join("pdf_pages", pdf_name))
+    pdf_folder = os.path.join("pdf_pages", pdf_name)
     if not os.path.exists(pdf_folder):
         return []
     
@@ -896,7 +868,7 @@ def search_within_pdf(pdf_name, query, co_client):
                 if response_data.get("relevant", False) and response_data.get("confidence", 0) > 0.6:
                     page_num = os.path.basename(page_file).replace("page_", "").replace(".png", "")
                     results.append({
-                        "path": os.path.normpath(page_file), 
+                        "path": page_file, 
                         "page_num": page_num,
                         "confidence": response_data.get("confidence", 0),
                         "matches": response_data.get("matches", []),
@@ -907,7 +879,7 @@ def search_within_pdf(pdf_name, query, co_client):
                 if "pertinent" in response.text.lower() and ("true" in response.text.lower() or "oui" in response.text.lower()):
                     page_num = os.path.basename(page_file).replace("page_", "").replace(".png", "")
                     results.append({
-                        "path": os.path.normpath(page_file), 
+                        "path": page_file, 
                         "page_num": page_num,
                         "confidence": 0.7,
                         "matches": [],
@@ -1038,10 +1010,7 @@ def display_document_statistics():
                     with cols[i % 3]:
                         page_num = os.path.basename(img_path).replace("page_", "").replace(".png", "")
                         img = load_image_cached(img_path)
-                        if img is not None:
-                            st.image(img, caption=f"Page {page_num}", use_container_width=True)
-                        else:
-                            st.error(f"Could not load page {page_num}")
+                        st.image(img, caption=f"Page {page_num}", use_container_width=True)
         else:
             st.info("No PDF documents have been processed yet.")
     
@@ -1980,64 +1949,48 @@ def save_feedback(index, answer_content=None):
     st.session_state[f"feedback_answer_{index}"] = answer_content
 
 def display_chat_history():
-    """Display the chat history with proper formatting and references"""
-    if not st.session_state.history:
-        return
-
-    for i, message in enumerate(st.session_state.history):
-        with st.container():
-            # Create columns for the message
-            col1, col2 = st.columns([1, 20])
-            
-            # Display avatar in first column
-            with col1:
-                if message["role"] == "user":
-                    st.image("logo.gif", width=40)
-                else:
-                    st.image("logo.gif", width=40)
-            
-            # Display message content in second column
-            with col2:
-                # Message header with timestamp
-                st.markdown(f"""
-                    <div class="message-header">
-                        <span class="role">{message["role"].title()}</span>
-                        <span class="timestamp">{message["timestamp"]}</span>
-                    </div>
-                """, unsafe_allow_html=True)
-                
-                # Message content
+    """Display the chat history with feedback functionality."""
+    if st.session_state.doc_embeddings is not None and st.session_state.image_paths:
+        if not st.session_state.history:
+            return
+        for i, message in enumerate(st.session_state.history):
+            with st.chat_message(message["role"]):
                 st.markdown(message["content"])
-                
-                # Display references if they exist
-                if "references" in message and message["references"]:
-                    with st.expander("References"):
-                        # Create columns for references
+                if message["role"] == "assistant":
+                    feedback = message.get("feedback", None)
+                    st.session_state[f"feedback_{i}"] = feedback
+                    # Create toolbar container
+                    st.markdown('<div class="chat-toolbar">', unsafe_allow_html=True)
+                    # Sources button
+                    if "references" in message:
+                        if st.button("Sources", key=f"ref_toggle_{i}", use_container_width=False):
+                            toggle_references(f"msg_{i}")
+                    # Set the answer in session state before rendering feedback button
+                    st.session_state[f"feedback_answer_{i}"] = message["content"]
+                    # Feedback buttons - directly call handle_feedback
+                    st.feedback(
+                        "thumbs",
+                        key=f"feedback_{i}",
+                        on_change=handle_feedback,
+                        args=[i],
+                    )
+                    st.markdown('</div>', unsafe_allow_html=True)
+                    # Show references if toggled
+                    if st.session_state.show_references.get(f"msg_{i}", False):
+                        st.write("#### References:")
                         cols = st.columns(min(3, len(message["references"])))
                         for j, ((img_path, score), col) in enumerate(zip(message["references"], cols)):
                             with col:
-                                # Use os.path.join and normpath for path construction
-                                img_path = os.path.normpath(os.path.join("pdf_pages", os.path.basename(os.path.dirname(img_path)), os.path.basename(img_path)))
-                                img = load_image_cached(img_path)
-                                if img is not None:
-                                    st.image(img, caption=f"Relevance: {score:.2f}")
-                                    filename = os.path.basename(img_path)
-                                    if "page_" in filename:
-                                        pdf_folder = os.path.basename(os.path.dirname(img_path))
-                                        st.markdown(f"*From: {pdf_folder}*")
+                                st.image(img_path, caption=f"Relevance: {score:.2f}", use_container_width=True)
+                                filename = os.path.basename(img_path)
+                                if "page_" in filename:
+                                    pdf_folder = os.path.basename(os.path.dirname(img_path))
+                                    page_num = filename.replace("page_", "").replace(".png", "")
+                                    st.caption(f"{pdf_folder} - Page {page_num}")
                                 else:
-                                    st.error(f"Could not load reference image: {os.path.basename(img_path)}")
-                
-                # Add feedback buttons
-                col1, col2 = st.columns(2)
-                with col1:
-                    if st.button("👍", key=f"up_{i}"):
-                        save_feedback(i, "positive")
-                with col2:
-                    if st.button("👎", key=f"down_{i}"):
-                        save_feedback(i, "negative")
-                
-                st.markdown("---")
+                                    st.caption(filename)
+                elif "image" in message and message["image"]:
+                    st.image(message["image"], use_container_width=True)
 
 def handle_feedback(message_index):
     """Handle feedback submission"""
