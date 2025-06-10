@@ -619,6 +619,9 @@ if os.path.exists(css_path):
 
 # --- Sidebar Redesign ---
 with st.sidebar:
+    st.image("https://www.universite-paris-saclay.fr/sites/default/files/media/2020-11/logo_upsaclay_2019.png", width=200)
+    st.markdown("Eve (*Prototype*)")
+    
     # University logo at the very top, reduced size
     st.markdown("<div style='margin-top: -1.5rem; margin-bottom: 0.5rem; text-align: center;'>", unsafe_allow_html=True)
     st.image("logo.gif", use_container_width=True, output_format="GIF")
