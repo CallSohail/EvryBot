@@ -40,6 +40,7 @@ KEY_FILE = "key.txt"
 ANALYTICS_FILE = "analytics_data.json"  # New file for analytics data
 WORKSPACES_FILE = "workspaces.json"
 
+st.set_page_config(layout="wide", page_title="Chatbot Évry")
 
 def load_workspaces():
     if not os.path.exists(WORKSPACES_FILE):
@@ -608,7 +609,7 @@ except Exception as e:
     st.error(f"Error initializing API clients: {str(e)}")
 
 # --- Streamlit App Configuration ---
-st.set_page_config(layout="wide", page_title="Chatbot Évry")
+# st.set_page_config(layout="wide", page_title="Chatbot Évry")
 
 # Load custom CSS from a separate file if it exists
 css_path = os.path.join(os.path.dirname(__file__), "custom_styles.css")
