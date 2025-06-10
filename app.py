@@ -776,7 +776,16 @@ def pil_to_base64(pil_image: PIL.Image.Image) -> str:
 @lru_cache(maxsize=100)
 def load_image_cached(image_path):
     """Cache image loading to improve performance"""
-    return Image.open(image_path)
+    try:
+        # Normalize the path to handle both Windows and Unix-style paths
+        normalized_path = os.path.normpath(image_path)
+        if not os.path.exists(normalized_path):
+            st.error(f"Image file not found: {normalized_path}")
+            return None
+        return Image.open(normalized_path)
+    except Exception as e:
+        st.error(f"Error loading image {image_path}: {str(e)}")
+        return None
 
 def track_api_usage(api_name, operation_type=None, success=True, response_time=None):
     """Enhanced API usage tracking with detailed metrics"""
@@ -844,7 +853,7 @@ def process_pdf_async(pdf_file, cohere_client, base_output_folder="pdf_pages"):
 
 def search_within_pdf(pdf_name, query, co_client):
     """Search for text within a PDF's pages using advanced prompt engineering"""
-    pdf_folder = os.path.join("pdf_pages", pdf_name)
+    pdf_folder = os.path.normpath(os.path.join("pdf_pages", pdf_name))
     if not os.path.exists(pdf_folder):
         return []
     
@@ -872,7 +881,7 @@ def search_within_pdf(pdf_name, query, co_client):
                 if response_data.get("relevant", False) and response_data.get("confidence", 0) > 0.6:
                     page_num = os.path.basename(page_file).replace("page_", "").replace(".png", "")
                     results.append({
-                        "path": page_file, 
+                        "path": os.path.normpath(page_file), 
                         "page_num": page_num,
                         "confidence": response_data.get("confidence", 0),
                         "matches": response_data.get("matches", []),
@@ -883,7 +892,7 @@ def search_within_pdf(pdf_name, query, co_client):
                 if "pertinent" in response.text.lower() and ("true" in response.text.lower() or "oui" in response.text.lower()):
                     page_num = os.path.basename(page_file).replace("page_", "").replace(".png", "")
                     results.append({
-                        "path": page_file, 
+                        "path": os.path.normpath(page_file), 
                         "page_num": page_num,
                         "confidence": 0.7,
                         "matches": [],
@@ -1014,7 +1023,10 @@ def display_document_statistics():
                     with cols[i % 3]:
                         page_num = os.path.basename(img_path).replace("page_", "").replace(".png", "")
                         img = load_image_cached(img_path)
-                        st.image(img, caption=f"Page {page_num}", use_container_width=True)
+                        if img is not None:
+                            st.image(img, caption=f"Page {page_num}", use_container_width=True)
+                        else:
+                            st.error(f"Could not load page {page_num}")
         else:
             st.info("No PDF documents have been processed yet.")
     
@@ -1989,13 +2001,17 @@ def display_chat_history():
                         cols = st.columns(min(3, len(message["references"])))
                         for j, ((img_path, score), col) in enumerate(zip(message["references"], cols)):
                             with col:
-                                # Use os.path.join for path construction
-                                img_path = os.path.join("pdf_pages", os.path.basename(os.path.dirname(img_path)), os.path.basename(img_path))
-                                st.image(img_path, caption=f"Relevance: {score:.2f}")
-                                filename = os.path.basename(img_path)
-                                if "page_" in filename:
-                                    pdf_folder = os.path.basename(os.path.dirname(img_path))
-                                    st.markdown(f"*From: {pdf_folder}*")
+                                # Use os.path.join and normpath for path construction
+                                img_path = os.path.normpath(os.path.join("pdf_pages", os.path.basename(os.path.dirname(img_path)), os.path.basename(img_path)))
+                                img = load_image_cached(img_path)
+                                if img is not None:
+                                    st.image(img, caption=f"Relevance: {score:.2f}")
+                                    filename = os.path.basename(img_path)
+                                    if "page_" in filename:
+                                        pdf_folder = os.path.basename(os.path.dirname(img_path))
+                                        st.markdown(f"*From: {pdf_folder}*")
+                                else:
+                                    st.error(f"Could not load reference image: {os.path.basename(img_path)}")
                 
                 # Add feedback buttons
                 col1, col2 = st.columns(2)
