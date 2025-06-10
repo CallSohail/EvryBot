@@ -30,6 +30,19 @@ from prompt_engineering import (
     FRENCH_INTENT_CATEGORIES
 )
 import shutil
+from dotenv import load_dotenv
+import logging
+from pathlib import Path
+import traceback
+import sys
+import matplotlib
+matplotlib.use('Agg')  # Use non-interactive backend
+import tempfile
+import shutil
+import subprocess
+import platform
+import warnings
+warnings.filterwarnings('ignore')
 
 # Configure matplotlib to use a fallback font
 plt.rcParams['font.family'] = 'sans-serif'
@@ -44,6 +57,17 @@ KEY_FILE = "key.txt"
 ANALYTICS_FILE = "analytics_data.json"  # New file for analytics data
 WORKSPACES_FILE = "workspaces.json"
 
+# --- Streamlit App Configuration ---
+st.set_page_config(layout="wide", page_title="Chatbot Évry")
+
+# Load custom CSS from a separate file if it exists
+css_path = os.path.join(os.path.dirname(__file__), "custom_styles.css")
+if os.path.exists(css_path):
+    with open(css_path) as f:
+        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+
+# --- Environment Variables and API Keys ---
+load_dotenv()
 
 def load_workspaces():
     if not os.path.exists(WORKSPACES_FILE):
@@ -610,15 +634,6 @@ try:
                 error_placeholder.empty()
 except Exception as e:
     st.error(f"Error initializing API clients: {str(e)}")
-
-# --- Streamlit App Configuration ---
-st.set_page_config(layout="wide", page_title="Chatbot Évry")
-
-# Load custom CSS from a separate file if it exists
-css_path = os.path.join(os.path.dirname(__file__), "custom_styles.css")
-if os.path.exists(css_path):
-    with open(css_path) as f:
-        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 # --- Sidebar Redesign ---
 with st.sidebar:
