@@ -141,7 +141,8 @@ def load_analytics_data():
                 data = json.load(f)
                 return data.get("analytics_data", {}), data.get("feedback_data", {})
     except Exception as e:
-        st.error(f"Error loading analytics data: {e}")
+        # st.error(f"Error loading analytics data: {e}")
+        pass
     return {}, {}
 
 # --- Deduplicate feedback on load ---
