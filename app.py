@@ -625,6 +625,10 @@ with st.sidebar:
     st.image("logo.gif", use_container_width=True, output_format="GIF")
     st.markdown("</div>", unsafe_allow_html=True)
 
+    st.markdown("</div>", unsafe_allow_html=True)
+    # Eve (Prototype) text
+    st.markdown("<div style='text-align: center; margin-bottom: 2rem;'><h2><strong>Eve</strong> <em>(Prototype)</em></h2></div>", unsafe_allow_html=True)
+
     # + NEW CHAT button with enhanced styling
     if st.button("+ NEW CHAT", key="new_chat_sidebar", use_container_width=True):
         save_current_chat()
